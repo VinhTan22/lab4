@@ -18,15 +18,20 @@ $("#update_drug").submit(function(event){
         data[n['name']] = n['value']
     })
 
-    var request = {
-        "url" : `${url}/api/drugs/${data.id}`,
-        "method" : "PUT",
-        "data" : data
-    }
+    console.log("Sending update:", data); // debug
 
-    $.ajax(request).done(function(response){
-        alert(data.name + " Updated Successfully!");
-        window.location.href = "/manage";
+    $.ajax({
+        url: `${url}/api/drugs/${data.id}`,
+        method: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function(response){
+            alert(data.name + " Updated Successfully!");
+            window.location.href = "/manage";
+        },
+        error: function(xhr){
+            alert("❌ Update failed: " + xhr.responseText);
+        }
     })
 })
 
