@@ -1,20 +1,13 @@
-const mongoose = require('mongoose');//mongoose is a JS library that works with MongoDB
+const mongoose = require('mongoose');
 
+const connectMongo = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/drugdb');
+    console.log("📦 Database successfully connected at 127.0.0.1");
+  } catch (err) {
+    console.error("❌ Database connection failed", err);
+    process.exit(1);
+  }
+};
 
-const connectDb = async () => {//an async function to prevent blocking
-    try{
-        const conn = await mongoose.connect(process.env.MONGO_STR, {//connect using connection string
-        	//outline features that would be used
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-
-        //Display on console if connection is successful
-        console.log(`Database successfully connected at ${conn.connection.host}`);
-    }catch(err){//catch errors
-        console.log(err);
-        process.exit(1);//exit from the process on error
-    }
-}
-
-module.exports = connectDb; //exports the connection function for use anywhere
+module.exports = connectMongo;
